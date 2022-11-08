@@ -42,15 +42,22 @@ function listarProvincia() {
             data.map(provinces => {
                 html += `
                     <tr id="${provinces.id}">
-                    <td>${provinces.id}</td>
+<<<<<<< HEAD
+                        
                         <td class="nombre">${provinces.nombre}</td>
-                        <td class="codigo">${provinces.codigo}</td>
-                          <td>  <a type="button" href="/provinces/update/${provinces.id}" 
+                        <td class="codigo">${provinces.codigo}  
+                        <td>    <a type="button" href="/provinces/update/${provinces.id}" 
+=======
+                        <td>${provinces.id}</td>
+                        <td class="nombre">${provinces.nombre}</td>
+                        <td class="codigo">${provinces.codigo}  
+                            <a type="button" href="/provinces/update/${provinces.id}" 
+>>>>>>> c1e6baaacb08bb141a67a923ae85f3c5278dc091
                             class="btn btn-outline-light btn-sm"><i class="bi bi-pencil-square text-dark"></i></a>
                             <button type="button" class="btn btn-outline-light btn-sm" onclick="eliminarProvincia
                             ('${provinces.id}')"><i class="bi bi-trash3-fill text-danger"></i></button>
                         </td>
-                            </tr>  
+                    </tr>
                 `
             })
 
