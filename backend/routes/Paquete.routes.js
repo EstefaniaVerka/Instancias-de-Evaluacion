@@ -1,5 +1,7 @@
 const router = require('express').Router()
-const { Paquete } = require('../database/models')
+const { Paquete, Provincia } = require('../database/models')
+
+
 
 router.get("/:id", (req, res) => {
     Paquete.findByPk(req.params.id).then(obj => {
@@ -7,8 +9,17 @@ router.get("/:id", (req, res) => {
     })
 })
 
+
+
 router.get("/", (req, res) => {
-    Paquete.findAll({}).then(list => {
+    Paquete.findAll({
+        attributes: ['id', 'descripcion', 'destinatario', 'direcciondeldestinatario'],
+        include: [{
+            model: Provincia,
+            as: 'provincia',
+            attributes: ["nombre", "codigo"]
+        }]
+    }).then(list => {
         res.json(list)
     })
 })
@@ -17,6 +28,7 @@ router.post("/create", (req, res) => {
     Paquete.create({
         destinatario: req.body.destinatario,
         direcciondeldestinatario: req.body.direcciondeldestinatario,
+        provinciaId: req.body.provinciaId, //ambos provinciaId
         descripcion: req.body.descripcion
     }).then(paquete => {
         res.json(paquete)
@@ -29,6 +41,7 @@ router.put('/update/:id', (req, res) => {
     Paquete.update({
         destinatario: req.body.destinatario,
         direcciondeldestinatario: req.body.direcciondeldestinatario,
+        provinciaId: req.body.provinciaId, //ambos provinciaId
         descripcion: req.body.descripcion
     }, {
         where: {

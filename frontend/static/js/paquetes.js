@@ -1,6 +1,7 @@
 // Auxiliares
 
-///const { Camion } = require("../../../backend/database/models")
+//const { Paquete, Provincia } = require("../../../backend/database/models")
+
 
 function disableButton(id) {
     const button = document.getElementById(id)
@@ -26,7 +27,7 @@ function getPaquete() {
         document.getElementById("destinatario").value = object.destinatario
         document.getElementById("direcciondeldestinatario").value = object.direcciondeldestinatario
         document.getElementById("descripcion").value = object.descripcion
-       /// loadSelect(Camion = object.paqueteId)
+        loadSelect(provincia = object.provinciaId)
 
         document.getElementById("form").className = ""
         document.getElementById('spinner').className = "d-none"
@@ -41,16 +42,25 @@ function listarPaquete() {
         .then(response => response.json())
         .then(data => {
             let paquetes = document.getElementById('paquetes')
-
             let html = ''
+            let provincia = ''
+
             data.map(packages => {
+                if (packages.provincia !== null && packages.provincia !== undefined && 
+                    packages.provincia !== {}) {
+                    provincia =`${packages.provincia.nombre} (${packages.provincia.codigo})`
+                } else {
+                    provincia =''
+                }
+
+                
                 html += `
                     <tr id="${packages.id}">
-                        <td>${packages.id}</td>
+                    <td>${packages.id}</td>
                         <td class="destinatario">${packages.destinatario}</td>
-                        <td class="direcciondeldestinatario">$${packages.direcciondeldestinatario}</td>
-                        <td class="descripcion">$${packages.descripcion}</td>
-                        
+                        <td class="direcciondeldestinatario">${packages.direcciondeldestinatario}</td>
+                        <td>${provincia}</td>
+                        <td class="descripcion">${packages.descripcion}</td>
                         <td>
                             <a type="button" href="/packages/update/${packages.id}" 
                             class="btn btn-outline-light btn-sm"><i class="bi bi-pencil-square text-dark"></i></a>
@@ -74,12 +84,16 @@ function crearPaquete() {
     const url = 'http://localhost:3000/paquetes/create'
     const destinatario = document.getElementById("destinatario")
     const direcciondeldestinatario = document.getElementById("direcciondeldestinatario")
+    const provincia = document.getElementById("provincia")
     const descripcion = document.getElementById("descripcion")
 
     const data = {
+        
         'destinatario': destinatario.value,
         'direcciondeldestinatario': direcciondeldestinatario.value,
+        'provinciaId': provincia.value,
         'descripcion': descripcion.value
+        
     }
 
     fetch(url, {
@@ -103,12 +117,14 @@ function editarPaquete(id) {
     const url = `http://localhost:3000/paquetes/update/${paquete_id}`
     const destinatario = document.getElementById("destinatario")
     const direcciondeldestinatario = document.getElementById("direcciondeldestinatario")
+    const provincia = document.getElementById("provincia")
     const descripcion = document.getElementById("descripcion")
 
     const data = {
         
         'destinatario': destinatario.value,
         'direcciondeldestinatario': direcciondeldestinatario.value,
+        'provinciaId': provincia.value,
         'descripcion': descripcion.value
     }
 
@@ -129,7 +145,7 @@ function eliminarPaquete(id) {
     const descripcion = item.querySelector('.descripcion').innerText
 
     if (confirm(`¿Desea eliminar el paquete "${descripcion}"?`)) {
-        const url = `http://localhost:3000/packages/delete/${id}`
+        const url = `http://localhost:3000/paquetes/delete/${id}`
 
         fetch(url, {
             method: 'DELETE'
@@ -140,4 +156,34 @@ function eliminarPaquete(id) {
             document.getElementById("error").innerText = "Ocurrió un error " + error
         })
     }
+}
+
+
+///relaciones
+
+function getProvincias(provincias, provincia) {
+    let url = 'http://localhost:3000/provincias';
+    fetch(url, {})
+    .then(response => response.json ())
+    .then(data =>  {
+        let html = '<option value = "null"> Seleccionar </option>'
+        let selected = ''
+        data.map(item => {
+            if (item.id == provincia) {
+                selected = 'selected'
+            } else {
+                selected =''
+            }
+
+            html += `<option value ="${item.id}" ${selected}>${item.nombre}</option>`
+        })
+
+        provincias.innerHTML = html
+    });
+}
+
+function loadSelect(provincia = null) {
+    const provincias = document.getElementById("provincia")
+
+    getProvincias(provincias, provincia)
 }

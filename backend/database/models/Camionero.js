@@ -4,7 +4,11 @@ const sequelize = require('../sequelize')
 class Camionero extends Model {}
 
 Camionero.init({
-    dni: DataTypes.STRING,
+    dni: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
     nombre: DataTypes.STRING,
     telefono: DataTypes.STRING,
     direccion: DataTypes.STRING,

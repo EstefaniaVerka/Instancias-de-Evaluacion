@@ -17,20 +17,23 @@
 
               <div class="mb-3">
                 <label for="destinatario" class="form-label">Destinatario</label>
-                <div class="input-group">
                   <input type="text" class="form-control" id="destinatario" name="destinatario">
                 </div>
 
                 <div class="mb-3">
                   <label for="direcciondeldestinatario" class="form-label">Direccion del Destinatario</label>
-                  <div class="input-group">
                     <input type="text"  class="form-control" id="direcciondeldestinatario" name="direcciondeldestinatario">
                   </div>
 
+                  <div class="mb-3">
+                <label class= "form-label" for ="provincia">Provincia</label>
+                  <select class="form-select" id="provincia" name="provincia">
+                    <option selected> Seleccionar</option>
+                  </select>
+                </div>
              
               <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripcion</label>
-                <div class="input-group">
                   <input type="text"  class="form-control" id="descripcion" name="descripcion">
               </div>
 
@@ -45,5 +48,10 @@
     crossorigin="anonymous"></script>
   </body>
   <script src="/js/paquetes.js"></script>
-
+  
+  <script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  loadSelect()
+})
+  </script>
 </html>

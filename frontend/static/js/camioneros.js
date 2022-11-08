@@ -46,7 +46,7 @@ function listarCamionero() {
             data.map(drivers => {
                 html += `
                     <tr id="${drivers.id}">
-                       
+                    <td class="dni">${drivers.id}</td>
                         <td class="dni">${drivers.dni}</td>
                         <td class="nombre">${drivers.nombre}</td>
                         <td class="telefono">${drivers.telefono}</td>
